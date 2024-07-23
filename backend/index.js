@@ -5,14 +5,15 @@ const app=express();
 const mongoose =require('mongoose');
 const jwt=require('jsonwebtoken');
 const multer =require("multer");
-const path =require("path");
 const cors =require('cors');
-const { error, log } = require('console');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+
 app.use(express.json());
 app.use(cors());
 
 //Data Base Connection with mongodb
-mongoose.connect("mongodb+srv://amaadhav938:5rc3UFqyzvsqyEqT@cluster0.ovydhlv.mongodb.net/ecomerce");
+mongoose.connect("mongodb+srv://amaadhav938:5rc3UFqyzvsqyEqT@cluster0.ovydhlv.mongodb.net/car-rental");
 app.get(("/",(req,res)=>{
     res.send("exprees app is runing")
 }))
@@ -28,15 +29,9 @@ const Product =mongoose.model("Product",{
     id:{type:Number,required:true},
     name:{type:String,required:true},
     image:{type:String},
-category:{type:String,required:true},
+color:{type:String,required:true},
 new_price:{type:Number,required:true},
-old_price:{type:Number,required:true},
-size1:{type:String},
-size2:{type:String},
-size3:{type:String},
-size4:{type:String},
-size5:{type:String},
-
+description:{type:String},
 
 date:{
     type:Date,
@@ -83,10 +78,13 @@ app.post('/signup',async(req,res)=>{
             cart[i]=0;
             
         }
+        const salt = await bcrypt.genSalt(10);
+        hassPassword = await bcrypt.hash(req.body.password, salt);
+      
         const user=new User({
             name:req.body.username,
             email:req.body.email,
-            password:req.body.password,
+            password:hassPassword,
             cartData:cart,
         })
       
@@ -136,18 +134,7 @@ app.get('/allproducts', async (req, res) => {
     }
   });
   //endpoint
-  app.get('/newcollection',async(req,res)=>{
-let products =await Product.find({});
-let newcollection=products.slice(1).slice(-8);
-console.log("newcollection fetced")
-res.send(newcollection)
-  })
-  app.get('/popularinwomen',async(req,res)=>{
-    let products =await Product.find({category:"women"});
-let popular=products.slice(0,4);
-console.log("Popular in women fetched");
-res.send(popular);
-  })
+  
 app.post('/removeproduct',async(req,res)=>{
     await Product.findOneAndDelete({id:req.body.id});
     console.log("removed")
@@ -218,7 +205,8 @@ app.post('/orderdetails', fetchUser, async (req, res) => {
       console.log(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
-  });  app.get('/orderr',async(req,res)=>{
+  }); 
+   app.get('/orderr',async(req,res)=>{
     let products =await Order.find({});
     res.send(products)
       })
@@ -259,14 +247,9 @@ app.post('/addproduct',async(req,res)=>{
         id:id,
         name:req.body.name,
         image:req.body.image,
-        category:req.body.category,
+        color:req.body.color,
         new_price:req.body.new_price,
-        old_price:req.body.old_price,
-       size1:req.body.size1,
-       size2:req.body.size2,
-       size3:req.body.size3,
-       size4:req.body.size4,
-       size5:req.body.size5,
+        description:req.body.description,
     });
    
     console.log(product);
