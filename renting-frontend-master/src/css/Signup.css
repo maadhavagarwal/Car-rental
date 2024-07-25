@@ -1,0 +1,42 @@
+.form1{
+    padding: 0px 200px;
+}
+.form1 label{
+    margin: 5px 0px;
+    width: 100%;
+    font-weight: bold;
+}
+.form1 input,.form1 select,.form1 select option{
+    width: 100%;
+    margin-top: 5px;
+    padding: 5px 8px;
+    border: none;
+    border-bottom: 2px solid red;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.form1 input:hover,.form1 select:hover,.form1 select option:hover{
+    border: 2px solid red;
+    cursor: pointer;
+
+}
+.submitButton{
+    width: 100%;
+    padding: 10px 0px;
+    border: none;
+    background-color: red;
+    border-radius: 40px 0px;
+    font-size:larger;
+    font-weight: bold;
+}
+.submitButton:hover{
+    border-radius: 0px 0px 30px 30px;
+}
+
+@media (max-width:1007px) {
+    .form1{
+        padding: 0px 10px;
+    }
+    
+}
