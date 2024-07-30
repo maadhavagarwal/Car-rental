@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "./Map";
 import dropdown from "../images/dropdown.png";
-import "../css/Home.css";  // Assuming you have a CSS file for styling
+import "../css/Home.css"; // Assuming you have a CSS file for styling
 
 export default function RentNow() {
     const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function RentNow() {
     const [rent, setRent] = useState([]);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
+    // const code=data.zip
 
     useEffect(() => {
         fetch("http://localhost:4000/allproducts")
@@ -45,10 +46,10 @@ export default function RentNow() {
 
     return (
         <div className="container">
-            <div className="container d-flex mt-3 justify-content-between border" style={{ flexWrap: "wrap" }}>
-                <div className="d-flex border ms-5" style={{ width: "500px" }}>
+            <div className="container d-flex mt-3 justify-content-between border" >
+                <div className="d-flex border ms-5" >
                     <div className="image-container mb-3">
-                        <img src={data.image} className="card-img-top" alt={data.name} style={{ borderRadius: "20px" }} />
+                        <img src={`http://localhost:4000/images/${data.image}`} className="card-img-top" alt={data.name}  />
                     </div>
                     <div className="d-flex border me-5" style={{ width: "500px" }}>
                         <div>
@@ -58,23 +59,35 @@ export default function RentNow() {
                             <h6>Licence Number: <strong>MH 48 AD 123</strong></h6>
                             <h6>Year: 2024</h6>
                             <h6>Type: {data.category}</h6>
-                            <h6>Pickup/Drop Address:</h6>
+                            <h6>Pickup/Drop Address:{data.zip}</h6>
                             <div>{data.description}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="d-flex justify-content-between">
-                <button className="d-flex justify-content-center py-1 me-2" onClick={() => setMap(!map)}
-                    style={{ backgroundColor: "red", borderRadius: "20px 0px 0px 20px", width: "100%", border: "none" }}>
-                    <strong>{!map ? <div>Show Map <img src={dropdown} width={"25px"} /></div> : <div>Hide Map <img src={dropdown} width={"25px"} style={{ transform: "rotate(180deg)" }} /></div>}</strong>
+                <button 
+                    className="d-flex justify-content-center py-1 me-2"
+                    onClick={() => setMap(!map)}
+                    style={{ backgroundColor: "red", borderRadius: "20px 0px 0px 20px", width: "100%", border: "none" }}
+                >
+                    <strong>
+                        {!map ? (
+                            <div>Show Map <img src={dropdown} width={"25px"} alt="dropdown" /></div>
+                        ) : (
+                            <div>Hide Map <img src={dropdown} width={"25px"} style={{ transform: "rotate(180deg)" }} alt="dropdown" /></div>
+                        )}
+                    </strong>
                 </button>
-                <button className="d-flex justify-content-center py-1 ms-2" onClick={() => navigate("/exit/"+data._id)}
-                    style={{ backgroundColor: "red", borderRadius: "0px 20px 20px 0px", width: "100%", border: "none" }}>
+                <button 
+                    className="d-flex justify-content-center py-1 ms-2"
+                    onClick={() => navigate(`/exit/${data._id}`)}
+                    style={{ backgroundColor: "red", borderRadius: "0px 20px 20px 0px", width: "100%", border: "none" }}
+                >
                     <strong>Rent Now</strong>
                 </button>
             </div>
-            {map && <Map zip={401301} />}
+            {map && <Map zip={data.zip} />}
         </div>
     );
 }

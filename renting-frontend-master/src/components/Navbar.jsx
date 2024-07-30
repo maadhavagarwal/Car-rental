@@ -52,6 +52,8 @@ export default function Navbar() {
           </li>
           <li className="nav-item">
           <Link to={'/addvehical'} className="nav-link">Add Vehical</Link>
+          <Link to={'/delvehical'} className="nav-link">My Vehicals</Link>
+
           </li>
         </ul>
       </div>

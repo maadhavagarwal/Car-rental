@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function AddVehicle() {
   const navigate = useNavigate();
@@ -25,7 +25,10 @@ export default function AddVehicle() {
     formData.append("new_price", data.rent);
     formData.append("category", data.year);
     formData.append("description", data.days);
-    formData.append("image", file); // Ensure `file` is the image file
+    formData.append("zip", data.address);
+   
+    formData.append("image", file);
+    formData.append("user", localStorage.getItem("id"));
 
     try {
       const res = await axios.post("http://localhost:4000/addproduct", formData, {
@@ -73,7 +76,7 @@ export default function AddVehicle() {
           </div>
           <label>
             Pickup/Drop Address:
-            <input type="text" placeholder="Address" className="input" {...register("address", { required: true })} />
+            <input type="text" placeholder="Enter the zip code" className="input" {...register("address", { required: true })} />
             {errors.address && <span style={{ fontSize: "small", color: "red" }}>This field is required!</span>}
           </label>
           <label>
@@ -92,6 +95,7 @@ export default function AddVehicle() {
           </div>
         </form>
       </div>
+    
     </div>
   );
 }

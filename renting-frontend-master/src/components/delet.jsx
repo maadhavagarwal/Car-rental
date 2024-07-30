@@ -1,0 +1,113 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../css/Home.css';
+
+export default function Home() {
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+const id=localStorage.getItem('id')
+  useEffect(() => {
+    fetch('http://localhost:4000/allproducts', {
+      headers: {
+        'auth-token': 'Bearer ' + localStorage.getItem('token'),
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data.products)) {
+          if (data.products.user === id) {
+            setProducts(data.products);
+       
+          }
+        } else {
+          throw new Error('Data is not an array');
+        }
+      })
+      .catch((error) => {
+        console.error('Fetch error:', error);
+        setError(error);
+      });
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch('http://localhost:4000/removeproduct', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': 'Bearer ' + localStorage.getItem('token'),
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setProducts(products.filter((product) => product._id !== id));
+      } else {
+        throw new Error('Failed to delete product');
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      setError(error);
+    }
+  };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <div className='container mt-3'>
+      <h1 className='text-center'>Welcome to Renting</h1>
+      <div className='row'>
+        {products.map((item, index) =>
+          item.status ? (
+            <div className='col-md-4 mb-3' key={index}>
+              <div
+                className='card w-100 card1'
+                style={{ cursor: 'pointer', borderRadius: '15px', border: '3px solid black' }}
+              >
+                <div className='image-container'>
+                  <img
+                    src={`http://localhost:4000/images/${item.image}`} // Make sure to include the base URL
+                    className='card-img-top'
+                    alt={item.name}
+                    style={{ borderRadius: '15px 15px 0px 0px' }}
+                  />
+                </div>
+                <div className='card-body'>
+                  <h5 className='card-title mb-2'>
+                    <strong>{item.name}</strong>
+                  </h5>
+                  <p className='card-text mb-2'>
+                    <strong>Rent:</strong> {item.new_price}
+                  </p>
+                  <p className='card-text'>
+                    <strong>Type:</strong> {item.category}
+                  </p>
+                  <button
+                    className='btn btn-danger'
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className='btn btn-primary ms-2'
+                    onClick={() => navigate('/update/' + item._id)}
+                    >Update</button>
+                </div>
+              </div>
+            </div>
+          ) : null
+        )}
+      </div>
+    </div>
+  );
+}

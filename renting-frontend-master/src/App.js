@@ -10,6 +10,9 @@ import Signup from "./components/Signup";
 import Myrents from "./components/Myrents";
 import Recipt from "./components/Recipt";
 import AddVehical from "./components/AddVehical";
+import UpVehical from "./components/update";
+import DelVehical from "./components/delet";
+
 import { Toaster } from "react-hot-toast";
 import Main from "./components/main";
 
@@ -27,6 +30,9 @@ function App() {
           <Route path="/myrents" element={<Myrents/>} extact></Route>
           <Route path="/recipt/:id" element={<Recipt/>} extact></Route>
           <Route path="/addvehical" element={<AddVehical/>} extact></Route>
+          <Route path="/update/:id" element={<UpVehical/>} extact></Route>
+          <Route path="/delvehical" element={<DelVehical/>} extact></Route>
+        
         </Routes>
         <Toaster/>
       </BrowserRouter>
