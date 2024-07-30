@@ -62,6 +62,7 @@ export default function Signup() {
           localStorage.setItem("user", JSON.stringify(res.data));
           localStorage.setItem("isAdmin", res.data.isAdmin);
           setIsAdmin(res.data.isAdmin);
+          localStorage.setItem("id",res.data.id);
           localStorage.setItem("isPopup", true);
         
 

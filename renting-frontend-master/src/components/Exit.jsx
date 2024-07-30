@@ -2,12 +2,13 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 export default function Exit() {
 
     const navigate = useNavigate();
-  
+  const id=useParams().id;
     const {
       register,
       handleSubmit,
@@ -23,22 +24,33 @@ export default function Exit() {
         days:data.days
       };
       try {
-        const res = await axios.post("http://localhost:4000/rent", {
+        const res1 = await axios.post("http://localhost:4000/rent", {
           name:rentInfo.name,
+          user:localStorage.getItem("id"),
           phone:rentInfo.phone,
           email:rentInfo.email,
           date:rentInfo.date,
-          days:rentInfo.days
+          days:rentInfo.days,
+          course:id
         
 
         });
-        if (res.data) {
-          toast.success("Vehical rented sucessfully!!");
+        if (res1.data) {
+          const res = await axios.patch(`http://localhost:4000/update/${id}`
+, {
+            status:false
+          });
+          if (res.data){
+            toast.success("Vehical rented sucessfully!!");
+         
+          }
+       
           setTimeout(() => {
             navigate("/");
           }, 500);
-        }
-      } catch (error) {
+        
+      } 
+    }catch (error) {
         // toast.error(error.response.data.message);
         console.log(error);
       }

@@ -12,9 +12,10 @@ export default function Navbar() {
         setShowPopup(!showPopup)
     }
     const logout=()=>{localStorage.clear();window.location.href='/login'}
-    const login=()=>{
+    const login=async(e)=>{
+        e.preventDefault()
       const data={email:user,password:password}
-      fetch('http://localhost:4000/login', {
+      await fetch('http://localhost:4000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

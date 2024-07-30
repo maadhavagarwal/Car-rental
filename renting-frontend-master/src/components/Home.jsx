@@ -38,7 +38,7 @@ export default function Home() {
             <h1 className='text-center'>Welcome to Renting</h1>
             <div className='row'>
                 {products.map((item, index) => (
-                    item.available ? (
+                    item.status ? (
                         <div className="col-md-4 mb-3" key={index}>
                             <div 
                                 className="card w-100 card1" 

@@ -69,7 +69,7 @@ export default function RentNow() {
                     style={{ backgroundColor: "red", borderRadius: "20px 0px 0px 20px", width: "100%", border: "none" }}>
                     <strong>{!map ? <div>Show Map <img src={dropdown} width={"25px"} /></div> : <div>Hide Map <img src={dropdown} width={"25px"} style={{ transform: "rotate(180deg)" }} /></div>}</strong>
                 </button>
-                <button className="d-flex justify-content-center py-1 ms-2" onClick={() => navigate("/exit")}
+                <button className="d-flex justify-content-center py-1 ms-2" onClick={() => navigate("/exit/"+data._id)}
                     style={{ backgroundColor: "red", borderRadius: "0px 20px 20px 0px", width: "100%", border: "none" }}>
                     <strong>Rent Now</strong>
                 </button>
