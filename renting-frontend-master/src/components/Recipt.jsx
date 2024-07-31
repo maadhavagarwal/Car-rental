@@ -47,6 +47,7 @@ export default function Recipt() {
         </div>
         <hr className="px-0" />
         {products.map((item, index) => (
+          
         <div className="body">
           <table className="table">
             <tbody>

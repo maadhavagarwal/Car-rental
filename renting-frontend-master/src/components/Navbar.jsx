@@ -20,12 +20,17 @@ export default function Navbar() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          email:data.user,
+        password:data.password}
+      )
       })
       .then(response => response.json())
       .then(data => {
         if(data.status===200){
           localStorage.setItem('token',data.token)
+          localStorage.setItem('id',data.id)
+       
           window.location.href='/'
         }
         else{
@@ -45,16 +50,19 @@ export default function Navbar() {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-           <Link to={'/'} className="nav-link">Home</Link>
+           <Link to={'/carrent'} className="nav-link">Cars</Link>
           </li>
           <li className="nav-item">
           <Link to={'/myrents'} className="nav-link">My Rents</Link>
           </li>
           <li className="nav-item">
           <Link to={'/addvehical'} className="nav-link">Add Vehical</Link>
-          <Link to={'/delvehical'} className="nav-link">My Vehicals</Link>
-
           </li>
+          <li className="nav-item">
+          <Link to={'/delvehical'} className="nav-link">My Vehicals</Link>
+          </li>
+
+          {/* </li> */}
         </ul>
       </div>
       

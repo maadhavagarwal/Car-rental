@@ -21,10 +21,7 @@ const id=localStorage.getItem('id')
       })
       .then((data) => {
         if (Array.isArray(data.products)) {
-          if (data.products.user === id) {
-            setProducts(data.products);
-       
-          }
+          setProducts(data.products);
         } else {
           throw new Error('Data is not an array');
         }
@@ -65,10 +62,10 @@ const id=localStorage.getItem('id')
 
   return (
     <div className='container mt-3'>
-      <h1 className='text-center'>Welcome to Renting</h1>
+      <h1 className='text-center'>Your cars</h1>
       <div className='row'>
         {products.map((item, index) =>
-          item.status ? (
+          item.user ==id  ? (
             <div className='col-md-4 mb-3' key={index}>
               <div
                 className='card w-100 card1'
